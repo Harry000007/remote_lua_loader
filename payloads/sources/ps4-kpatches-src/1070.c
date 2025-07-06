@@ -1,10 +1,10 @@
 #include "sections.h"
 
-#include "offsets/1050.h"
+#include "offsets/1070.h"
 
 // clang-format off
 
-const struct kpayload_offsets offsets_1050 PAYLOAD_RDATA = {
+const struct kpayload_offsets offsets_1070 PAYLOAD_RDATA = {
   // data
   .XFAST_SYSCALL_addr              = 0x000001C0,
   .M_TEMP_addr                     = 0x01A5FE30,
@@ -118,7 +118,7 @@ const struct kpayload_offsets offsets_1050 PAYLOAD_RDATA = {
   .enable_fpkg_patch               = 0x003D544F,
 
   // SceShellCore patches - use `free` prefix instead `fake`
-  .fake_free_patch                 = 0x00FB5D59,
+  .fake_free_patch                 = 0x00FB5D99,
 
   // SceShellCore patches - enable official external HDD support
   .pkg_installer_patch             = 0x009F5FD1,

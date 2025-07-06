@@ -1,10 +1,10 @@
 #include "sections.h"
 
-#include "offsets/903.h"
+#include "offsets/904.h"
 
 // clang-format off
 
-const struct kpayload_offsets offsets_903 PAYLOAD_RDATA = {
+const struct kpayload_offsets offsets_904 PAYLOAD_RDATA = {
   // data
   .XFAST_SYSCALL_addr              = 0x000001C0,
   .M_TEMP_addr                     = 0x0155E1E0,
@@ -92,15 +92,15 @@ const struct kpayload_offsets offsets_903 PAYLOAD_RDATA = {
 
   // SceShellCore patches - call sceKernelIsGenuineCEX
   .sceKernelIsGenuineCEX_patch1    = 0x0016F014,
-  .sceKernelIsGenuineCEX_patch2    = 0x00864744,
-  .sceKernelIsGenuineCEX_patch3    = 0x008B2232,
-  .sceKernelIsGenuineCEX_patch4    = 0x00A2A254,
+  .sceKernelIsGenuineCEX_patch2    = 0x00864774,
+  .sceKernelIsGenuineCEX_patch3    = 0x008B2262,
+  .sceKernelIsGenuineCEX_patch4    = 0x00A2A274,
 
   // SceShellCore patches - call nidf_libSceDipsw
   .nidf_libSceDipsw_patch1         = 0x0016F042,
   .nidf_libSceDipsw_patch2         = 0x0024A4EB,
-  .nidf_libSceDipsw_patch3         = 0x00864772,
-  .nidf_libSceDipsw_patch4         = 0x00A2A282,
+  .nidf_libSceDipsw_patch3         = 0x008647A2,
+  .nidf_libSceDipsw_patch4         = 0x00A2A2A2,
 
   // SceShellCore patches - bypass firmware checks
   .check_disc_root_param_patch     = 0x00139310,
@@ -112,23 +112,23 @@ const struct kpayload_offsets offsets_903 PAYLOAD_RDATA = {
   .enable_data_mount_patch         = 0x00321F2B,
 
   // SceShellCore patches - enable VR without spoof
-  .enable_psvr_patch               = 0x00DB31E0,
+  .enable_psvr_patch               = 0x00DB3200,
 
   // SceShellCore patches - enable fpkg
   .enable_fpkg_patch               = 0x003DA06F,
 
   // SceShellCore patches - use `free` prefix instead `fake`
-  .fake_free_patch                 = 0x00FD5BD1,
+  .fake_free_patch                 = 0x00FD5BF1,
 
   // SceShellCore patches - enable official external HDD support
-  .pkg_installer_patch             = 0x00A13101,
-  .ext_hdd_patch                   = 0x0061A66D,
+  .pkg_installer_patch             = 0x00A13121,
+  .ext_hdd_patch                   = 0x0061A69D,
 
   // SceShellCore patches - enable debug trophies
-  .debug_trophies_patch            = 0x00745809,
+  .debug_trophies_patch            = 0x00745839,
 
   // SceShellCore patches - disable screenshot block
-  .disable_screenshot_patch        = 0x000D1956,
+  .disable_screenshot_patch        = 0x0038EE26,
 
   // Process structure offsets
   .proc_p_comm_offset = 0x454,

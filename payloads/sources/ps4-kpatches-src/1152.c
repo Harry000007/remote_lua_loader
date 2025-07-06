@@ -1,10 +1,10 @@
 #include "sections.h"
 
-#include "offsets/1150.h"
+#include "offsets/1152.h"
 
 // clang-format off
 
-const struct kpayload_offsets offsets_1150 PAYLOAD_RDATA = {
+const struct kpayload_offsets offsets_1152 PAYLOAD_RDATA = {
   // data
   .XFAST_SYSCALL_addr              = 0x000001C0,
   .M_TEMP_addr                     = 0x01520D00,

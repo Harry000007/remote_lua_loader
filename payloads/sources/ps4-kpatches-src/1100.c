@@ -1,170 +1,138 @@
-/* Copyright (C) 2024-2025 anonymous
+#include "sections.h"
 
-This file is part of PSFree.
+#include "offsets/1100.h"
 
-PSFree is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.
+// clang-format off
 
-PSFree is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
+const struct kpayload_offsets offsets_1100 PAYLOAD_RDATA = {
+  // data
+  .XFAST_SYSCALL_addr              = 0x000001C0,
+  .M_TEMP_addr                     = 0x015415B0,
+  .MINI_SYSCORE_SELF_BINARY_addr   = 0x0155CC48,
+  .ALLPROC_addr                    = 0x022D0A98,
+  .SBL_DRIVER_MAPPED_PAGES_addr    = 0x02646688,
+  .SBL_PFS_SX_addr                 = 0x0264C080,
+  .SBL_KEYMGR_KEY_SLOTS_addr       = 0x026606E8,
+  .SBL_KEYMGR_KEY_RBTREE_addr      = 0x026606F8,
+  .SBL_KEYMGR_BUF_VA_addr          = 0x02664000,
+  .SBL_KEYMGR_BUF_GVA_addr         = 0x02664808,
+  .FPU_CTX_addr                    = 0x02660180,
+  .SYSENT_addr                     = 0x01101760,
 
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
+  // common
+  .memcmp_addr                     = 0x000948B0,
+  ._sx_xlock_addr                  = 0x000E3200,
+  ._sx_xunlock_addr                = 0x000E33C0,
+  .malloc_addr                     = 0x001A4220,
+  .free_addr                       = 0x001A43E0,
+  .strstr_addr                     = 0x002C5740,
+  .fpu_kern_enter_addr             = 0x000C0660,
+  .fpu_kern_leave_addr             = 0x000C0720,
+  .memcpy_addr                     = 0x002DDDF0,
+  .memset_addr                     = 0x000482D0,
+  .strlen_addr                     = 0x0021DC40,
+  .printf_addr                     = 0x002FCBD0,
+  .eventhandler_register_addr      = 0x0043E440,
 
-// 11.00
+  // Fself
+  .sceSblACMgrGetPathId_addr       = 0x003D0E90,
+  .sceSblServiceMailbox_addr       = 0x0062F810,
+  .sceSblAuthMgrSmIsLoadable2_addr = 0x00642F90,
+  ._sceSblAuthMgrGetSelfInfo_addr  = 0x006437D0,
+  ._sceSblAuthMgrSmStart_addr      = 0x0063E9C0,
+  .sceSblAuthMgrVerifyHeader_addr  = 0x00642FF0,
 
-#include "types.h"
-#include "utils.h"
+  // Fpkg
+  .RsaesPkcs1v15Dec2048CRT_addr    = 0x003C8060,
+  .Sha256Hmac_addr                 = 0x002D1CA0,
+  .AesCbcCfb128Encrypt_addr        = 0x002DEAA0,
+  .AesCbcCfb128Decrypt_addr        = 0x002DECD0,
+  .sceSblDriverSendMsg_0_addr      = 0x0061AF60,
+  .sceSblPfsSetKeys_addr           = 0x0061D900,
+  .sceSblKeymgrSetKeyStorage_addr  = 0x0062EDC0,
+  .sceSblKeymgrSetKeyForPfs_addr   = 0x00625DF0,
+  .sceSblKeymgrCleartKey_addr      = 0x00626130,
+  .sceSblKeymgrSmCallfunc_addr     = 0x006259C0,
 
-static inline void do_patch(void *kbase);
+  // Patch
+  .vmspace_acquire_ref_addr        = 0x00357720,
+  .vmspace_free_addr               = 0x00357550,
+  .vm_map_lock_read_addr           = 0x003578B0,
+  .vm_map_unlock_read_addr         = 0x00357900,
+  .vm_map_lookup_entry_addr        = 0x00357EF0,
+  .proc_rwmem_addr                 = 0x003838A0,
 
-__attribute__((section (".text.start")))
-int kpatch(void *td) {
-    const u64 xfast_syscall_off = 0x1c0;
-    void * const kbase = (void *)rdmsr(0xc0000082) - xfast_syscall_off;
+  // Fself hooks
+  .sceSblAuthMgrIsLoadable__sceSblACMgrGetPathId_hook        = 0x0063D13C,
+  .sceSblAuthMgrIsLoadable2_hook                             = 0x0063D28E,
+  .sceSblAuthMgrVerifyHeader_hook1                           = 0x0063DA26,
+  .sceSblAuthMgrVerifyHeader_hook2                           = 0x0063E709,
+  .sceSblAuthMgrSmLoadSelfSegment__sceSblServiceMailbox_hook = 0x00640E0D,
+  .sceSblAuthMgrSmLoadSelfBlock__sceSblServiceMailbox_hook   = 0x00641A48,
 
-    do_patch(kbase);
+  // Fpkg hooks
+  .sceSblKeymgrSetKeyStorage__sceSblDriverSendMsg_hook       = 0x0062EE65,
+  .sceSblKeymgrInvalidateKey__sx_xlock_hook                  = 0x00626FAD,
+  .sceSblKeymgrSmCallfunc_npdrm_decrypt_isolated_rif_hook    = 0x0064D230,
+  .sceSblKeymgrSmCallfunc_npdrm_decrypt_rif_new_hook         = 0x0064DFFE,
+  .mountpfs__sceSblPfsSetKeys_hook1                          = 0x006993B9,
+  .mountpfs__sceSblPfsSetKeys_hook2                          = 0x006995EA,
 
-    return 0;
-}
+  // SceShellUI patches - debug patches - libkernel_sys.sprx
+  .sceSblRcMgrIsAllowDebugMenuForSettings_patch              = 0x0001D100,
+  .sceSblRcMgrIsStoreMode_patch                              = 0x0001D460,
 
-__attribute__((always_inline))
-static inline void do_patch(void *kbase) {
-    disable_cr0_wp();
+  // SceShellUI patches - remote play patches
+  .CreateUserForIDU_patch                                    = 0x0018B110, // system_ex\app\NPXS20001\eboot.bin
+  .remote_play_menu_patch                                    = 0x00ECAB92, // system_ex\app\NPXS20001\psm\Application\app.exe.sprx
 
-    // LightningMods's additional dlsym patches from PPPwn
-    write16(kbase, 0x1e4c33, 0x04eb); // skip check 1
-    write16(kbase, 0x1e4c43, 0x04eb); // skip check 2
-    write16(kbase, 0x1e4c63, 0xe990); // nop + jmp
+  // SceRemotePlay patches - remote play patches - system\vsh\app\NPXS21006
+  .SceRemotePlay_patch1                                      = 0x000ECCB5,
+  .SceRemotePlay_patch2                                      = 0x000ECCD0,
 
-    // ChendoChap's patches from pOOBs4
-    write16(kbase, 0x623f64, 0x00eb); // veriPatch
-    write8(kbase, 0xacd, 0xeb); // bcopy
-    write8(kbase, 0x2ddd3d, 0xeb); // bzero
-    write8(kbase, 0x2ddd81, 0xeb); // pagezero
-    write8(kbase, 0x2dddfd, 0xeb); // memcpy
-    write8(kbase, 0x2dde41, 0xeb); // pagecopy
-    write8(kbase, 0x2ddfed, 0xeb); // copyin
-    write8(kbase, 0x2de49d, 0xeb); // copyinstr
-    write8(kbase, 0x2de56d, 0xeb); // copystr
+  // SceShellCore patches - call sceKernelIsGenuineCEX
+  .sceKernelIsGenuineCEX_patch1    = 0x0016B664,
+  .sceKernelIsGenuineCEX_patch2    = 0x0086BD24,
+  .sceKernelIsGenuineCEX_patch3    = 0x008BC022,
+  .sceKernelIsGenuineCEX_patch4    = 0x00A1D6C4,
 
-    // stop sysVeri from causing a delayed panic on suspend
-    write16(kbase, 0x62484f, 0x00eb);
+  // SceShellCore patches - call nidf_libSceDipsw
+  .nidf_libSceDipsw_patch1         = 0x0016B692,
+  .nidf_libSceDipsw_patch2         = 0x00249E0C,
+  .nidf_libSceDipsw_patch3         = 0x0086BD52,
+  .nidf_libSceDipsw_patch4         = 0x00A1D6F2,
 
-    // patch amd64_syscall() to allow calling syscalls everywhere
-    // struct syscall_args sa; // initialized already
-    // u64 code = get_u64_at_user_address(td->tf_frame-tf_rip);
-    // int is_invalid_syscall = 0
-    //
-    // // check the calling code if it looks like one of the syscall stubs at a
-    // // libkernel library and check if the syscall number correponds to the
-    // // proper stub
-    // if ((code & 0xff0000000000ffff) != 0x890000000000c0c7
-    //     || sa.code != (u32)(code >> 0x10)
-    // ) {
-    //     // patch this to " = 0" instead
-    //     is_invalid_syscall = -1;
-    // }
-    write32(kbase, 0x490, 0);
-    // these code corresponds to the check that ensures that the caller's
-    // instruction pointer is inside the libkernel library's memory range
-    //
-    // // patch the check to always go to the "goto do_syscall;" line
-    // void *code = td->td_frame->tf_rip;
-    // if (libkernel->start <= code && code < libkernel->end
-    //     && is_invalid_syscall == 0
-    // ) {
-    //     goto do_syscall;
-    // }
-    //
-    // do_syscall:
-    //     ...
-    //     lea     rsi, [rbp - 0x78]
-    //     mov     rdi, rbx
-    //     mov     rax, qword [rbp - 0x80]
-    //     call    qword [rax + 8] ; error = (sa->callp->sy_call)(td, sa->args)
-    //
-    // sy_call() is the function that will execute the requested syscall.
-    write8(kbase, 0x4c2, 0xeb);
-    write16(kbase, 0x4b9, 0x00eb);
-    write16(kbase, 0x4b5, 0x00eb);
+  // SceShellCore patches - bypass firmware checks
+  .check_disc_root_param_patch     = 0xDEADC0DE,
+  .app_installer_patch             = 0x00134A50,
+  .check_system_version            = 0x003C41A7,
+  .check_title_system_update_patch = 0x003C73F0,
 
-    // patch sys_setuid() to allow freely changing the effective user ID
-    // ; PRIV_CRED_SETUID = 50
-    // call priv_check_cred(oldcred, PRIV_CRED_SETUID, 0)
-    // test eax, eax
-    // je ... ; patch je to jmp
-    write8(kbase, 0x431526, 0xeb);
+  // SceShellCore patches - enable remote pkg installer
+  .enable_data_mount_patch         = 0x0031F070,
 
-    // patch vm_map_protect() (called by sys_mprotect()) to allow rwx mappings
-    //
-    // this check is skipped after the patch
-    //
-    // if ((new_prot & current->max_protection) != new_prot) {
-    //     vm_map_unlock(map);
-    //     return (KERN_PROTECTION_FAILURE);
-    // }
-    write32(kbase, 0x35c8ee, 0);
+  // SceShellCore patches - enable VR without spoof
+  .enable_psvr_patch               = 0x00DA7D00,
 
-    // TODO: Description of this patch. patch sys_dynlib_load_prx()
-    write16(kbase, 0x1e46f4, 0xe990);
+  // SceShellCore patches - enable fpkg
+  .enable_fpkg_patch               = 0x003D7C9F,
 
-    // patch sys_dynlib_dlsym() to allow dynamic symbol resolution everywhere
-    // call    ...
-    // mov     r14, qword [rbp - 0xad0]
-    // cmp     eax, 0x4000000
-    // jb      ... ; patch jb to jmp
-    write32(kbase, 0x1e4ca8, 0x013ce990);
-    // patch called function to always return 0
-    //
-    // sys_dynlib_dlsym:
-    //     ...
-    //     mov     edi, 0x10 ; 16
-    //     call    patched_function ; kernel_base + 0x951c0
-    //     test    eax, eax
-    //     je      ...
-    //     mov     rax, qword [rbp - 0xad8]
-    //     ...
-    // patched_function: ; patch to "xor eax, eax; ret"
-    //     push    rbp
-    //     mov     rbp, rsp
-    //     ...
-    write32(kbase, 0x88ce0, 0xc3c03148);
+  // SceShellCore patches - use `free` prefix instead `fake`
+  .fake_free_patch                 = 0x00FC8439,
 
-    // patch sys_mmap() to allow rwx mappings
-    // patch maximum cpu mem protection: 0x33 -> 0x37
-    // the ps4 added custom protections for their gpu memory accesses
-    // GPU X: 0x8 R: 0x10 W: 0x20
-    // that's why you see other bits set
-    // ref: https://cturt.github.io/ps4-2.html
-    write8(kbase, 0x15626a, 0x37);
-    write8(kbase, 0x15626d, 0x37);
+  // SceShellCore patches - enable official external HDD support
+  .pkg_installer_patch             = 0x00A06C11,
+  .ext_hdd_patch                   = 0x0060E17D,
 
-    // overwrite the entry of syscall 11 (unimplemented) in sysent
-    //
-    // struct args {
-    //     u64 rdi;
-    //     u64 rsi;
-    //     u64 rdx;
-    //     u64 rcx;
-    //     u64 r8;
-    //     u64 r9;
-    // };
-    //
-    // int sys_kexec(struct thread td, struct args *uap) {
-    //     asm("jmp qword ptr [rsi]");
-    // }
-    const u64 sysent_11_off = 0x1101970;
-    // .sy_narg = 2
-    write32(kbase, sysent_11_off, 2);
-    // .sy_call = gadgets['jmp qword ptr [rsi]']
-    write64(kbase, sysent_11_off + 8, kbase + 0x71a21);
-    // .sy_thrcnt = SY_THR_STATIC
-    write32(kbase, sysent_11_off + 0x2c, 1);
+  // SceShellCore patches - enable debug trophies
+  .debug_trophies_patch            = 0x007456E9,
 
-    enable_cr0_wp();
-}
+  // SceShellCore patches - disable screenshot block
+  .disable_screenshot_patch        = 0x000CF876,
+
+  // Process structure offsets
+  .proc_p_comm_offset = 0x454,
+  .proc_path_offset   = 0x474,
+};
+
+// clang-format on

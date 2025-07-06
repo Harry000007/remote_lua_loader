@@ -1,10 +1,10 @@
 #include "sections.h"
 
-#include "offsets/950.h"
+#include "offsets/960.h"
 
 // clang-format off
 
-const struct kpayload_offsets offsets_950 PAYLOAD_RDATA = {
+const struct kpayload_offsets offsets_960 PAYLOAD_RDATA = {
   // data
   .XFAST_SYSCALL_addr              = 0x000001C0,
   .M_TEMP_addr                     = 0x01A4ECB0,
@@ -84,51 +84,51 @@ const struct kpayload_offsets offsets_950 PAYLOAD_RDATA = {
 
   // SceShellUI patches - remote play patches
   .CreateUserForIDU_patch                                    = 0x00185160, // system_ex\app\NPXS20001\eboot.bin
-  .remote_play_menu_patch                                    = 0x00EEFC61, // system_ex\app\NPXS20001\psm\Application\app.exe.sprx
+  .remote_play_menu_patch                                    = 0x00EEFF41, // system_ex\app\NPXS20001\psm\Application\app.exe.sprx
 
   // SceRemotePlay patches - remote play patches - system\vsh\app\NPXS21006
   .SceRemotePlay_patch1                                      = 0x000EA0B5,
   .SceRemotePlay_patch2                                      = 0x000EA0D0,
 
   // SceShellCore patches - call sceKernelIsGenuineCEX
-  .sceKernelIsGenuineCEX_patch1    = 0x0016C364,
-  .sceKernelIsGenuineCEX_patch2    = 0x00861BE4,
-  .sceKernelIsGenuineCEX_patch3    = 0x008B07E2,
-  .sceKernelIsGenuineCEX_patch4    = 0x00A10E04,
+  .sceKernelIsGenuineCEX_patch1    = 0x0016CD64,
+  .sceKernelIsGenuineCEX_patch2    = 0x008630A4,
+  .sceKernelIsGenuineCEX_patch3    = 0x008B1CA2,
+  .sceKernelIsGenuineCEX_patch4    = 0x00A122C4,
 
   // SceShellCore patches - call nidf_libSceDipsw
-  .nidf_libSceDipsw_patch1         = 0x0016C392,
-  .nidf_libSceDipsw_patch2         = 0x00248FEC,
-  .nidf_libSceDipsw_patch3         = 0x00861C12,
-  .nidf_libSceDipsw_patch4         = 0x00A10E32,
+  .nidf_libSceDipsw_patch1         = 0x0016CD92,
+  .nidf_libSceDipsw_patch2         = 0x0024A35C,
+  .nidf_libSceDipsw_patch3         = 0x008630D2,
+  .nidf_libSceDipsw_patch4         = 0x00A122F2,
 
   // SceShellCore patches - bypass firmware checks
   .check_disc_root_param_patch     = 0xDEADC0DE,
-  .app_installer_patch             = 0x00135760,
-  .check_system_version            = 0x003C0C27,
-  .check_title_system_update_patch = 0x003C3E70,
+  .app_installer_patch             = 0x00136160,
+  .check_system_version            = 0x003C1F97,
+  .check_title_system_update_patch = 0x003C51E0,
 
   // SceShellCore patches - enable remote pkg installer
-  .enable_data_mount_patch         = 0x0031C2E1,
+  .enable_data_mount_patch         = 0x0031D651,
 
   // SceShellCore patches - enable VR without spoof
-  .enable_psvr_patch               = 0x00D982D0,
+  .enable_psvr_patch               = 0x00D99B00,
 
   // SceShellCore patches - enable fpkg
-  .enable_fpkg_patch               = 0x003D3B2F,
+  .enable_fpkg_patch               = 0x003D4E9F,
 
   // SceShellCore patches - use `free` prefix instead `fake`
-  .fake_free_patch                 = 0x00FBB8D9,
+  .fake_free_patch                 = 0x00FBD319,
 
   // SceShellCore patches - enable official external HDD support
-  .pkg_installer_patch             = 0x009FA351,
-  .ext_hdd_patch                   = 0x0060F71D,
+  .pkg_installer_patch             = 0x009FB811,
+  .ext_hdd_patch                   = 0x00610AED,
 
   // SceShellCore patches - enable debug trophies
-  .debug_trophies_patch            = 0x00740949,
+  .debug_trophies_patch            = 0x00741E09,
 
   // SceShellCore patches - disable screenshot block
-  .disable_screenshot_patch        = 0x000CF686,
+  .disable_screenshot_patch        = 0x000CF776,
 
   // Process structure offsets
   .proc_p_comm_offset = 0x454,
